@@ -349,6 +349,11 @@ document.addEventListener('click', function(e) {
     var type = row.getAttribute('data-type');
     if (type === 'stock') selectStock(sym);
     else if (type === 'fx') selectFX(sym);
+    return;
+  }
+  if (e.target.closest('.re-btn')) {
+    reAnalyze();
+    return;
   }
 });
 
@@ -412,7 +417,7 @@ function renderFXList() {
       var cols = ICON_COLS[i%10];
       var isSel = selectedItem && selectedItem.symbol===p.symbol;
       var dec = (p.quote==="JPY"||p.quote==="INR"||p.quote==="MXN"||p.quote==="ZAR") ? 3 : 5;
-      return '<div class="stock-row'+(isSel?" selected":"")+'" onclick="selectFX(''+p.symbol+'')">'+
+      return '<div class="stock-row'+(isSel?" selected":"")+' data-sym="'+p.symbol+'" data-type="fx">'+
         '<div class="stock-icon" style="background:'+cols[0]+';border:1px solid '+cols[1]+';color:'+cols[2]+';font-size:11px;">'+p.flag+'</div>'+
         '<div><div class="stock-sym">'+p.symbol+'</div><div class="stock-sub">'+p.name+'</div></div>'+
         sparkSVG(q?q.sparkline:null, isPos)+
@@ -622,7 +627,7 @@ function renderResult(text, s, q, cur, disp, dec) {
     '</div>'+
     '<div class="result-lines">'+lines+'</div>'+
     '<div class="action-row">'+
-    '<button class="btn" style="flex:1;background:transparent;border:1px solid '+color+'40;color:'+color+'" onclick="'+(selectedType==="fx"?"selectFX":"selectStock")+'(''+symForReanalyze+'')">R RE-ANALYZE</button>'+
+    '<button class="btn re-btn" style="flex:1;background:transparent;border:1px solid '+color+'40;color:'+color+'">Re-Analyze</button>'+
     '<button class="btn" style="flex:2;background:'+color+';color:#080c14;font-weight:600;">'+execLbl+'</button>'+
     '</div></div>';
 }
